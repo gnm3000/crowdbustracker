@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HTML GeoLocation Test</title>
+<script type="text/javascript">
+var watchID=0;
+
+function startLocationTracking(){
+	if (navigator.geolocation) {
+		alert("Your Browser supports GeoLocation");
+		watchID = navigator.geolocation.watchPosition(showCurrentLocation,errorHandler,{enableHighAccuracy: true});
+	} else {
+		alert("Your Browser does not support GeoLocation.");
+	}
+}
+
+function showCurrentLocation(position){
+	document.getElementById("mylocation").innerHTML = "Tracking your position --> Current Latitude : " + position.coords.latitude + " , Longitude : " + position.coords.longitude;
+}
+
+function errorHandler(error){
+	  alert("Error while retrieving current position. Error code: " + error.code + ",Message: " + error.message);
+}
+
+function stopLocationTracking(){
+	if (watchID > 0) {
+		navigator.geolocation.clearWatch(watchID);
+		alert("Stopped Tracking Location");
+	}
+}
+function finishLocationTracking(){
+	if (watchID > 0) {
+		navigator.geolocation.clearWatch(watchID);
+		alert("Stopped Tracking Location");
+		document.getElementById("mylocation").innerHTML ="Muchas gracias por informar el viaje de tu colectivo.";
+	}
+}
+</script>
+</head>
+<body>
+<h1>Tracking de la ubicacion de tu colectivo</h1>
+<h3>Seleccionado: <%=bus%></h3>
+<div id="main">
+	<div id="mylocation"></div>
+	<input type="button" value="Comenzar a trackear" onclick="startLocationTracking()"/>
+	<input type="button" value="Parar de trackear" onclick="stopLocationTracking()"/>
+	<input type="button" value="Finalizar viaje" onclick="finishLocationTracking()"/>
+</div>
+</body>
+</html>
