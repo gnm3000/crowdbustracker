@@ -73,6 +73,9 @@ app.get('/login', function(req, res){
   res.render('login', { user: req.user });
 });
 
+app.get('/menu', ensureAuthenticated,function(req, res){
+  res.render('menu', { user: req.user });
+});
 
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -94,7 +97,7 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/menu');
   });
 
 app.get('/logout', function(req, res){
