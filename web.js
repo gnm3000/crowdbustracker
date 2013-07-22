@@ -89,11 +89,11 @@ app.get('/menu', ensureAuthenticated,function(req, res){
 app.get('/select/:next_route', function(req, res){
   res.render('select', { user: req.user,next_route:req.params.next_route });
 });
-app.get('/track/:next_route', function(req, res){
-  res.render('track', { user: req.user,next_route:req.params.next_route });
+app.get('/track/:bus', function(req, res){
+  res.render('track', { user: req.user,bus:req.params.bus });
 });
-app.get('/view/:next_route', function(req, res){
-  res.render('view', { user: req.user,next_route:req.params.next_route });
+app.get('/view/:bus', function(req, res){
+  res.render('view', { user: req.user,bus:req.params.bus });
 });
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the
