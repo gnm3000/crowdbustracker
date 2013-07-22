@@ -17,7 +17,7 @@ function startLocationTracking(){
 }
 
 function showCurrentLocation(position){
-	document.getElementById("mylocation").innerHTML = "Tracking your position --> Current Latitude : " + position.coords.latitude + " , Longitude : " + position.coords.longitude;
+	document.getElementById("mylocation").innerHTML = "Tracking your position --> Current Latitude : <span id='latitude'>" + position.coords.latitude + "</span> , Longitude : <span id='longitude'>" + position.coords.longitude+"</span>";
 }
 
 function errorHandler(error){
@@ -48,5 +48,19 @@ function finishLocationTracking(){
 	<input type="button" value="Parar de trackear" onclick="stopLocationTracking()"/>
 	<input type="button" value="Finalizar viaje" onclick="finishLocationTracking()"/>
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+	
+
+function contador(){
+	var latitude = $("#latitude").html();
+	var longitude = $("#longitude").html();
+$.post('/updatePosition',{latitude:latitude,longitude:longitude}, function(data) {
+  console.log("perfecto");
+});
+}
+
+	setInterval('contador()',2000);
+</script>
 </body>
 </html>

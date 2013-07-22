@@ -1,6 +1,14 @@
 <% if (!user) { %>
-	<h2>Welcome! Please log in.</h2>
-	<p><a href='/login'>LOGIN</a></p>
+	<h2>Bienvenido!</h2>
+	<p>Con esta app vas a poder informar donde estan los colectivos cuando te subis, y vas a poder saber desde tu casa en donde estan gracias a los informes que hacen otros usuarios.</p>
+	<h3>¿Como funciona?</h3>
+	<ol>
+	<li>Te logueas a la aplicacion y seleccionas si queres Trackear o queres ver.</li>
+	<li>Elegis el colectivo que vas a trackear o ver su ubicacion.</li>
+	<li>El sistema te solicita la ubicacion de tu celular.</li>
+	<li>Te bajas del cole, apagas la aplicación, y ganas puntos!</li>
+	</ol>
+	<p><a href='/auth/facebook'>LOGIN</a></p>
 <% } else { %>
 	<h2>Hello, <%= user.username %>.</h2>
 <% } %>

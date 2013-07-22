@@ -2,7 +2,7 @@ var express = require("express") , passport = require('passport'), util = requir
  , FacebookStrategy = require('passport-facebook').Strategy;
  var FACEBOOK_APP_ID = "150506191810997"
 var FACEBOOK_APP_SECRET = "c0510117225af25b201e4d9be86960ef";
-
+var fs = require('fs');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -72,9 +72,38 @@ app.configure(function() {
 
 
 app.get('/', function(req, res){
-  res.render('index', { user: req.user });
+  //
+  if (req.isAuthenticated()){
+  	res.redirect('/menu');
+  }else{
+  	res.render('index', { user: req.user });
+  }
+  
+});
+app.get('/map', function(req, res){
+
+fs.readFile("test.txt", function(err, data){
+	res.render('map',{point:JSON.parse(data)});
+  
 });
 
+  
+});
+
+
+app.post('/updatePosition', function(req, res){
+  
+	var latitude = req.body.latitude;
+	var longitude = req.body.longitude;
+
+
+fs.writeFile("test.txt", JSON.stringify({latitude:latitude,longitude:longitude}), function(err){
+  if (err) console.log(err);
+    res.send("OK.lat="+latitude+"--long="+longitude,200);
+});
+
+
+});
 app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', { user: req.user });
 });
