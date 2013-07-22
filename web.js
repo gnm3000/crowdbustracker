@@ -86,13 +86,13 @@ app.get('/login', function(req, res){
 app.get('/menu', ensureAuthenticated,function(req, res){
   res.render('menu', { user: req.user });
 });
-app.get('/select/:next_route', ensureAuthenticated,function(req, res){
+app.get('/select/:next_route', function(req, res){
   res.render('select', { user: req.user,next_route:req.params.next_route });
 });
-app.get('/track/:bus', ensureAuthenticated,function(req, res){
+app.get('/track/:bus', function(req, res){
   res.render('track', { user: req.user,bus:req.params.bus });
 });
-app.get('/view/:bus', ensureAuthenticated,function(req, res){
+app.get('/view/:bus', function(req, res){
   res.render('view', { user: req.user,bus:req.params.bus });
 });
 // GET /auth/facebook
