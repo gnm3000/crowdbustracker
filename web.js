@@ -44,16 +44,26 @@ passport.use(new FacebookStrategy({
 
 var app = express();
 // configure Express
+//var cookieParser = exports.cookieParser = express.cookieParser(config.session.secret);
 app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.logger());
-  app.use(express.cookieParser());
+  app.use(express.cookieParser('keyboard_cat'));
+   //app.use(connect.cookieSession({ secret: 'tobo!', cookie: { maxAge: 60 * 60 * 1000 }}));
+
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(express.session({ key:'keyboard_cat',secret: 'keyboard_cat',cookie: {secure: false,maxAge: 86400000, expires : new Date(Date.now() + 86400000)} }));
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
+  /*app.use(express.session({
+      store: sessionStore,
+      cookie: {secure: false,maxAge: 86400000, expires : new Date(Date.now() + 86400000)},
+     
+      key: 'jsession_chatmefm_'+86400000, 
+      secret: config.session.secret
+    }));*/
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(app.router);
@@ -76,7 +86,15 @@ app.get('/login', function(req, res){
 app.get('/menu', ensureAuthenticated,function(req, res){
   res.render('menu', { user: req.user });
 });
-
+app.get('/select/:next_route', function(req, res){
+  res.render('select', { user: req.user,next_route:req.params.next_route });
+});
+app.get('/track/:next_route', function(req, res){
+  res.render('track', { user: req.user,next_route:req.params.next_route });
+});
+app.get('/view/:next_route', function(req, res){
+  res.render('view', { user: req.user,next_route:req.params.next_route });
+});
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in Facebook authentication will involve
