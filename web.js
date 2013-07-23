@@ -79,12 +79,13 @@ app.configure(function() {
 
 
 app.get('/', function(req, res){
+  res.redirect('/track/chaco-corrientes');
   //
-  if (req.isAuthenticated()){
+  /*if (req.isAuthenticated()){
   	res.redirect('/menu');
   }else{
   	res.render('index', { user: req.user });
-  }
+  }*/
   
 });
 app.get('/map/:minutes', function(req, res){
