@@ -10,10 +10,10 @@
 <section id="wrapper">
 
     <header>
-    <h1>Con esta aplicacion web para el celular, Eentre todos hacemos seguimiento colectivo a las unidades de Chaco-Corrientes!</h1>
+    <h1>Seguimiento colectivo a las unidades de Chaco-Corrientes!</h1>
       <h2>Se encuentraron <%=points.length%> puntos los ultimos <%=minutes%> minutos</h2>
       <h2><a href="/track/chaco-corrientes">¿Queres hacer seguimiento de un cole! entra aca!</a></h2>
-      <p>
+      <p>Ver los: 
   <a href="/map/5">Ultimos 5 Min</a> | 
   <a href="/map/10">Ultimos 10 Min</a> | 
   <a href="/map/15">Ultimos 15 Min</a> | 
@@ -26,20 +26,12 @@
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <article>
-      <p>Finding your location: <span id="status">checking...</span></p>
+      <p> <span id="status"></span></p>
     </article>
 <script>
 function success(position) {
   //console.log(position);
-  var s = document.querySelector('#status');
   
-  if (s.className == 'success') {
-    // not sure why we're hitting this twice in FF, I think it's to do with a cached result coming back    
-    return;
-  }
-  
-  s.innerHTML = "found you!";
-  s.className = 'success';
   
   var mapcanvas = document.createElement('div');
   mapcanvas.id = 'mapcanvas';
@@ -100,7 +92,7 @@ success();
 </section>
 
 <script src="http://html5demos.com/js/prettify.packed.js"></script>
-
+<div style="display:none">
 <p><%=fecha_menor%></p>
 <ul>
 <% points.forEach(function(element){%>
@@ -108,5 +100,6 @@ success();
   
   <%});%>
   </ul>
+  </div>
 </body>
 </html>
