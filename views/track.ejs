@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>HTML GeoLocation Test</title>
+<title>Tracking tu colectivo</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <script type="text/javascript">
@@ -50,7 +50,9 @@ function finishLocationTracking(){
 <h3>Seleccionado: <%=bus%></h3>
 <div id="main">
 	<div id="mylocation" data-status="desactivo"></div>
-	<div id="lastUpadate"></div>
+	<p>Hacemos tracking de la ubicacion del colectivo cada 30 segundos:</p>
+	<p>Ultimo update:<span id="lastUpadate"></span><br/>Hora actual: <span id="time"></span></p>
+	<p>Cantidad de updates:<span id="cantUpdate"></span></p>
 	<input type="button" value="Comenzar a trackear" onclick="startLocationTracking()"/>
 	<input type="button" value="Parar de trackear" onclick="stopLocationTracking()"/>
 	<input type="button" value="Finalizar viaje" onclick="finishLocationTracking()"/>
@@ -58,34 +60,76 @@ function finishLocationTracking(){
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">
 	
-
+var cantUpdate = 0;
 function contador(){
-
+console.log("arranca contador");
 if($("#mylocation").data("status")=="activo"){
 	var latitude = $("#latitude").html();
 	var longitude = $("#longitude").html();
-$.post('/updatePosition',{latitude:latitude,longitude:longitude}, function(data) {
-	var fecha = new Date()
-var hora = fecha.getHours()
-var minuto = fecha.getMinutes()
-var segundo = fecha.getSeconds()
-if (hora < 10) {hora = "0" + hora}
-if (minuto < 10) {minuto = "0" + minuto}
-if (segundo < 10) {segundo = "0" + segundo}
-var horita = hora + ":" + minuto + ":" + segundo;
-var fecha_total = horita + ' - ' + fecha.getDate() + "/" + (fecha.getMonth() + 1) +'/'+ fecha.getFullYear();
-  $("#lastUpadate").html(fecha_total);
-});
+
+
+	//aca va el jquery a mongodb
+	$.ajax( { url: "https://api.mongolab.com/api/1/databases/heroku_app17058222/collections/positions?apiKey=yLBCBklrMclT4A2VNuiWCPrHJmdQ3zjY",
+          data: JSON.stringify( { "latitude" : latitude, "longitude":longitude,"datetime":new Date(),bus:"<%=bus%>" } ),
+          type: "POST",
+          contentType: "application/json" } ).done(function(data){
+		          	var fecha = new Date()
+					var hora = fecha.getHours()
+					var minuto = fecha.getMinutes()
+					var segundo = fecha.getSeconds()
+					if (hora < 10) {hora = "0" + hora}
+					if (minuto < 10) {minuto = "0" + minuto}
+					if (segundo < 10) {segundo = "0" + segundo}
+					var horita = hora + ":" + minuto + ":" + segundo;
+					var fecha_total = horita + ' - ' + fecha.getDate() + "/" + (fecha.getMonth() + 1) +'/'+ fecha.getFullYear();
+					  $("#lastUpadate").html(horita);
+					  cantUpdate = cantUpdate +1;
+					  $("#cantUpdate").html(cantUpdate);
+					  console.log("termina contador"+fecha_total);
+          });
+
+
+
 
 }
 }
 
 
 
-	setInterval('contador()',2*1*1000);
+	setInterval('contador()',1*30*1000);
 
 	
 
 </script>
+<script language="JavaScript">
+(function($){
+  $.fn.jTime = function(o) {
+    var d = {x:'time-capa',ma:new Date(),i:0};
+    var o = $.extend(d, o);
+    o.ma = new Date(o.ma);
+    
+    var mHF = function (){
+      var ma = new Date(o.ma.getTime() + o.i * 1000);
+      h = ma.getHours();
+      m = ma.getMinutes();
+      s = ma.getSeconds(); 
+      if (h<=9) h = '0'+h;
+      if (m<=9) m = '0'+m;
+      if (s<=9) s = '0'+s;
+      hi = h + ":" + m + ":" + s;
+      $('#'+o.x).html(hi); 
+      o.i += 1;   
+    }
+    return this.each(function(){
+      o.x = $(this).attr('id');
+      setInterval(mHF,1000);     
+    });
+};
+})(jQuery);
+$(document).ready(function(){
+  $('#time').jTime();
+});
+</script>
+
 </body>
 </html>

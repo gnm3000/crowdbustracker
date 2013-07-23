@@ -38,23 +38,24 @@ function success(position) {
     
   document.querySelector('article').appendChild(mapcanvas);
   
-  var latlng = new google.maps.LatLng("<%=point.latitude%>","<%=point.longitude%>");
+  var latlng = new google.maps.LatLng("-27.4744645","-58.84687349999999");
   
 
   var myOptions = {
-    zoom: 15,
+    zoom: 14,
     center: latlng,
     mapTypeControl: false,
     navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
-  
+  <% points.forEach(function(element){%>
   var marker = new google.maps.Marker({
-      position: latlng, 
+      position: new google.maps.LatLng("<%=element.latitude%>","<%=element.longitude%>"),
       map: map, 
-      title:"You are here! (at least within a meter radius)"
+      title:"<%=element.bus%>"
   });
+  <%});%>
 }
 
 function error(msg) {

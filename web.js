@@ -3,6 +3,13 @@ var express = require("express") , passport = require('passport'), util = requir
  var FACEBOOK_APP_ID = "150506191810997"
 var FACEBOOK_APP_SECRET = "c0510117225af25b201e4d9be86960ef";
 var fs = require('fs');
+var mongo = require('mongodb');
+
+var mongoUri = "mongodb://heroku_app17058222:9ocu5dnk769vj6rav0so4nqpb9@ds037478.mongolab.com:37478/heroku_app17058222"; 
+
+
+
+
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -82,12 +89,15 @@ app.get('/', function(req, res){
 });
 app.get('/map', function(req, res){
 
-fs.readFile("test.txt", function(err, data){
-	res.render('map',{point:JSON.parse(data)});
-  
+
+mongo.Db.connect(mongoUri,{safe:false}, function (err, db) {
+  db.collection('positions', function(er, collection) {
+    collection.find().toArray(function(err,positions){
+	res.render('map',{points:positions});
+});
+  });
 });
 
-  
 });
 
 
