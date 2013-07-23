@@ -79,7 +79,7 @@ app.configure(function() {
 
 
 app.get('/', function(req, res){
-  res.redirect('/track/chaco-corrientes');
+  res.redirect('/map');
   //
   /*if (req.isAuthenticated()){
   	res.redirect('/menu');
