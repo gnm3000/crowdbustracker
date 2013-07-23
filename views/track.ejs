@@ -4,11 +4,15 @@
 <head>
 <meta charset="utf-8">
 <title>HTML GeoLocation Test</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <script type="text/javascript">
 var watchID=0;
 
 function startLocationTracking(){
 	if (navigator.geolocation) {
+		$("#mylocation").data("status","activo");
+		contador();
 		alert("Your Browser supports GeoLocation");
 		watchID = navigator.geolocation.watchPosition(showCurrentLocation,errorHandler,{enableHighAccuracy: true});
 	} else {
@@ -27,6 +31,7 @@ function errorHandler(error){
 function stopLocationTracking(){
 	if (watchID > 0) {
 		navigator.geolocation.clearWatch(watchID);
+		$("#mylocation").data("status","desactivo");
 		alert("Stopped Tracking Location");
 	}
 }
@@ -34,6 +39,7 @@ function finishLocationTracking(){
 	if (watchID > 0) {
 		navigator.geolocation.clearWatch(watchID);
 		alert("Stopped Tracking Location");
+		$("#mylocation").data("status","desactivo");
 		document.getElementById("mylocation").innerHTML ="Muchas gracias por informar el viaje de tu colectivo.";
 	}
 }
@@ -43,7 +49,8 @@ function finishLocationTracking(){
 <h1>Tracking de la ubicacion de tu colectivo</h1>
 <h3>Seleccionado: <%=bus%></h3>
 <div id="main">
-	<div id="mylocation"></div>
+	<div id="mylocation" data-status="desactivo"></div>
+	<div id="lastUpadate"></div>
 	<input type="button" value="Comenzar a trackear" onclick="startLocationTracking()"/>
 	<input type="button" value="Parar de trackear" onclick="stopLocationTracking()"/>
 	<input type="button" value="Finalizar viaje" onclick="finishLocationTracking()"/>
@@ -53,14 +60,32 @@ function finishLocationTracking(){
 	
 
 function contador(){
+
+if($("#mylocation").data("status")=="activo"){
 	var latitude = $("#latitude").html();
 	var longitude = $("#longitude").html();
 $.post('/updatePosition',{latitude:latitude,longitude:longitude}, function(data) {
-  console.log("perfecto");
+	var fecha = new Date()
+var hora = fecha.getHours()
+var minuto = fecha.getMinutes()
+var segundo = fecha.getSeconds()
+if (hora < 10) {hora = "0" + hora}
+if (minuto < 10) {minuto = "0" + minuto}
+if (segundo < 10) {segundo = "0" + segundo}
+var horita = hora + ":" + minuto + ":" + segundo;
+var fecha_total = horita + ' - ' + fecha.getDate() + "/" + (fecha.getMonth() + 1) +'/'+ fecha.getFullYear();
+  $("#lastUpadate").html(fecha_total);
 });
+
+}
 }
 
-	setInterval('contador()',10000);
+
+
+	setInterval('contador()',2*1*1000);
+
+	
+
 </script>
 </body>
 </html>
