@@ -13,10 +13,10 @@ function startLocationTracking(){
 	if (navigator.geolocation) {
 		$("#mylocation").data("status","activo");
 		contador();
-		alert("Your Browser supports GeoLocation");
+		//alert("Your Browser supports GeoLocation");
 		watchID = navigator.geolocation.watchPosition(showCurrentLocation,errorHandler,{enableHighAccuracy: true});
 	} else {
-		alert("Your Browser does not support GeoLocation.");
+		alert("Tu exporador no soporta no tiene GPS o GeoLocation. Prueba en otro celular");
 	}
 }
 
@@ -25,20 +25,20 @@ function showCurrentLocation(position){
 }
 
 function errorHandler(error){
-	  alert("Error while retrieving current position. Error code: " + error.code + ",Message: " + error.message);
+	  alert("Error mientras se recibia la posicion.Error code: " + error.code + ",Message: " + error.message);
 }
 
 function stopLocationTracking(){
 	if (watchID > 0) {
 		navigator.geolocation.clearWatch(watchID);
 		$("#mylocation").data("status","desactivo");
-		alert("Stopped Tracking Location");
+		alert("Se hizo un Stop al tracking");
 	}
 }
 function finishLocationTracking(){
 	if (watchID > 0) {
 		navigator.geolocation.clearWatch(watchID);
-		alert("Stopped Tracking Location");
+		alert("Se hizo un Stop al tracking. Muchas gracias por hacer tracking!");
 		$("#mylocation").data("status","desactivo");
 		document.getElementById("mylocation").innerHTML ="Muchas gracias por informar el viaje de tu colectivo.";
 	}
