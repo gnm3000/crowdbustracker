@@ -115,7 +115,11 @@ mongo.Db.connect(mongoUri,{safe:false}, function (err, db) {
 
 });
 
+app.get('/map',function(req, res){
+  //res.render('account', { user: req.user });
+res.redirect("/map/10");
 
+});
 
 app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', { user: req.user });
