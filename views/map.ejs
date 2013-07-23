@@ -10,7 +10,7 @@
 <section id="wrapper">
 <div id="carbonads-container"><div class="carbonad"><div id="azcarbon"></div><script type="text/javascript">var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = "http://engine.carbonads.com/z/14060/azcarbon_2_1_0_VERT"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);</script></div></div>
     <header>
-      <h1>geolocation</h1>
+      <h1>Se encuentraron <%=points.length%> puntos</h1>
     </header>
 <meta name="viewport" content="width=620" />
 
@@ -88,5 +88,12 @@ try {
 var pageTracker = _gat._getTracker("UA-1656750-18");
 pageTracker._trackPageview();
 } catch(err) {}</script>
+<p><%=fecha_menor%></p>
+<ul>
+<% points.forEach(function(element){%>
+<li>"<%=element.latitude%>","<%=element.longitude%>"/ <%=element.bus%>/ <%=element.time%></li>
+  
+  <%});%>
+  </ul>
 </body>
 </html>

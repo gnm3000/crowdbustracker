@@ -4,7 +4,7 @@ var express = require("express") , passport = require('passport'), util = requir
 var FACEBOOK_APP_SECRET = "c0510117225af25b201e4d9be86960ef";
 var fs = require('fs');
 var mongo = require('mongodb');
-
+var isodate = require("isodate");
 var mongoUri = "mongodb://heroku_app17058222:9ocu5dnk769vj6rav0so4nqpb9@ds037478.mongolab.com:37478/heroku_app17058222"; 
 
 
@@ -87,13 +87,28 @@ app.get('/', function(req, res){
   }
   
 });
-app.get('/map', function(req, res){
+app.get('/map/:minutes', function(req, res){
 
 
 mongo.Db.connect(mongoUri,{safe:false}, function (err, db) {
   db.collection('positions', function(er, collection) {
-    collection.find().toArray(function(err,positions){
-	res.render('map',{points:positions});
+
+  	var today = new Date();
+  	var fecha_menor = new Date(today.getTime() - (1 * req.params.minutes * 60 * 1000)) - (1* today.getTimezoneOffset() * 60*1000);
+  	console.log("today==>"+today+".... fecha menor==>"+fecha_menor);
+  	var fecha = {
+    "time": {
+        "$gt": new Date(fecha_menor).toJSON()
+    }
+};
+  	var criteria = fecha;
+  	console.log("criteria="+JSON.stringify(criteria));
+  	//console.log(fecha_menor.toISOString());
+    collection.find(criteria).toArray(function(err,positions){
+    	//console.log(positions.length);
+    	//if(positions){res.send("SI"+positions.length);}else{res.send("NO");}
+    	
+	res.render('map',{points:positions,fecha_menor:new Date(fecha_menor).toJSON()});
 });
   });
 });
@@ -101,19 +116,7 @@ mongo.Db.connect(mongoUri,{safe:false}, function (err, db) {
 });
 
 
-app.post('/updatePosition', function(req, res){
-  
-	var latitude = req.body.latitude;
-	var longitude = req.body.longitude;
 
-
-fs.writeFile("test.txt", JSON.stringify({latitude:latitude,longitude:longitude}), function(err){
-  if (err) console.log(err);
-    res.send("OK.lat="+latitude+"--long="+longitude,200);
-});
-
-
-});
 app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', { user: req.user });
 });

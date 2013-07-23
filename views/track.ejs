@@ -67,10 +67,14 @@ if($("#mylocation").data("status")=="activo"){
 	var latitude = $("#latitude").html();
 	var longitude = $("#longitude").html();
 
-
+console.log("la fecha real=>"+new Date().toISOString());
 	//aca va el jquery a mongodb
+	console.log("la modificada que se guarda=>"+addTimeToDate(-3, 'h', new Date()).toISOString());
+	var time_gmt = addTimeToDate(-3, 'h', new Date());
 	$.ajax( { url: "https://api.mongolab.com/api/1/databases/heroku_app17058222/collections/positions?apiKey=yLBCBklrMclT4A2VNuiWCPrHJmdQ3zjY",
-          data: JSON.stringify( { "latitude" : latitude, "longitude":longitude,"datetime":new Date(),bus:"<%=bus%>" } ),
+          data: JSON.stringify( { "latitude" : latitude, "longitude":longitude,
+          	"time":addTimeToDate(-3, 'h', new Date()).toISOString(),
+          	bus:"<%=bus%>" } ),
           type: "POST",
           contentType: "application/json" } ).done(function(data){
 		          	var fecha = new Date()
@@ -96,7 +100,7 @@ if($("#mylocation").data("status")=="activo"){
 
 
 
-	setInterval('contador()',1*30*1000);
+	setInterval('contador()',1*5*1000);
 
 	
 
@@ -130,6 +134,76 @@ $(document).ready(function(){
   $('#time').jTime();
 });
 </script>
+<script type="text/javascript">
+function addTimeToDate(time,unit,objDate,dateReference){
+    var dateTemp=(dateReference)?objDate:new Date(objDate);
+    switch(unit){
+        case 'y': dateTemp.setFullYear(objDate.getFullYear()+time); break;
+        case 'M': dateTemp.setMonth(objDate.getMonth()+time); break;
+        case 'w': dateTemp.setTime(dateTemp.getTime()+(time*7*24*60*60*1000)); break;
+        case 'd': dateTemp.setTime(dateTemp.getTime()+(time*24*60*60*1000)); break;
+        case 'h': dateTemp.setTime(dateTemp.getTime()+(time*60*60*1000)); break;
+        case 'm': dateTemp.setTime(dateTemp.getTime()+(time*60*1000)); break;
+        case 's': dateTemp.setTime(dateTemp.getTime()+(time*1000)); break;
+        default : dateTemp.setTime(dateTemp.getTime()+time); break;
+    }
+    return dateTemp;
+}
+            /* www.devtics.com.mx
+             * By Jfco Diaz
+             * @fcodiaz
+             * 22/06/2010
+             * Licencia GPLv3/MIT
+             **/
+            var hoy=new Date();//se crea el objeto Date a la fecha actual            
+            /*function printBr(txt){
+                document.write(txt+"<br/>");
+            }
+            function printHr(txt){
+                document.write(txt+"<hr/>");
+            }
+            printHr("Hoy Es "+hoy);
 
+            printBr("Hoy + 700000 milisegundos "+addTimeToDate(700000, '', hoy));
+            printHr("Hoy - 700000 milisegundos "+addTimeToDate(-700000, '', hoy));
+
+            printBr("Hoy + 150 segundos "+addTimeToDate(150, 's', hoy));
+            printHr("Hoy - 150 segundos "+addTimeToDate(-150, 's', hoy));
+
+            printBr("Hoy + 10 min  "+addTimeToDate(10, 'm', hoy));
+            printHr("Hoy - 20 min  "+addTimeToDate(-20, 'm', hoy));
+
+            printBr("Hoy + 2 hrs  "+addTimeToDate(5, 'h', hoy));
+            printHr("Hoy - 5 hrs  "+addTimeToDate(5, 'h', hoy));
+
+            printBr("Hoy + 5 dias "+addTimeToDate(5, 'd', hoy));
+            printHr("Hoy - 10 dias "+addTimeToDate(-10, 'd', hoy));
+            
+            printBr("Hoy + 2 semanas "+addTimeToDate(2, 'w', hoy));
+            printHr("Hoy - 2 semanas "+addTimeToDate(-2, 'w', hoy));                        
+
+            printBr("Hoy + 5 mese "+addTimeToDate(5, 'M', hoy));
+            printHr("Hoy - 5 meses  "+addTimeToDate(-5, 'M', hoy));            
+
+            printBr("Hoy + 12 año  "+addTimeToDate(12, 'y', hoy));
+            printHr("Hoy - 12 min  "+addTimeToDate(-12, 'y', hoy));
+
+            /* Si se pasa como cuarto parámetro un true addTimetoDate usa el objetoDate
+             * como referencia y modifica el objeto directamente,
+             *  -*no crea un nuevo objeto Date
+             **/
+           /* printBr(hoy);
+            addTimeToDate(5,'d',hoy,true);
+            printBr(hoy);*/
+            /*
+             * Si se omite el cuarto parámetro o se pasa un false(por defecto)
+             * addTimeToDate *crear un nuevo objeto* y opera sobre este dejando
+             * intacto el objeto original, al final regresa el objetoDate temporal
+             * o la referencia al objetDate original según se indico en el
+             * tercer parámetro
+             **/            
+   
+
+</script>
 </body>
 </html>
