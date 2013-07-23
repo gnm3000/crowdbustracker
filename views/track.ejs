@@ -46,8 +46,18 @@ function finishLocationTracking(){
 </script>
 </head>
 <body>
-<h1>Tracking de la ubicacion de tu colectivo</h1>
-<h3>Seleccionado: <%=bus%></h3>
+<h1>¿Donde está el cole Chaco-Corrientes?</h1>
+<p>Selecciona tu colectivo: <select id='colectivo'>
+<option value="Chaco-Corrientes x Sarmiento" selected>Chaco-Corrientes x Sarmiento</option>
+<option value="Chaco-Corrientes x Barranqueras">Chaco-Corrientes x Barranqueras</option>
+<option value="Chaco-Corrientes x CAMPUS">Chaco-Corrientes x CAMPUS</option>
+</select></p>
+<p>Selecciona la direccion: 
+<select id='direccion'>
+<option value="De chaco a Corrientes" selected>De chaco a Corrientes</option>
+<option value="De Corrientes a Chaco">De Corrientes a Chaco</option>
+</select>
+</p>
 <div id="main">
 	<div id="mylocation" data-status="desactivo"></div>
 	<p>Hacemos tracking de la ubicacion del colectivo cada 30 segundos:</p>
@@ -71,10 +81,14 @@ console.log("la fecha real que se guarda ahora=>"+new Date().toISOString());
 	//aca va el jquery a mongodb
 	console.log("la modificada que se guardaba=>"+addTimeToDate(-3, 'h', new Date()).toISOString());
 	var time_gmt = addTimeToDate(-3, 'h', new Date());
-	$.ajax( { url: "https://api.mongolab.com/api/1/databases/heroku_app17058222/collections/positions?apiKey=yLBCBklrMclT4A2VNuiWCPrHJmdQ3zjY",
-          data: JSON.stringify( { "latitude" : latitude, "longitude":longitude,
+
+	var datos = { "latitude" : latitude, "longitude":longitude,
           	"time":new Date().toISOString(),
-          	bus:"<%=bus%>" } ),
+          	bus:$("#colectivo option:selected").val(),
+          	direccion:$("#direccion option:selected").val() }
+
+	$.ajax( { url: "https://api.mongolab.com/api/1/databases/heroku_app17058222/collections/positions?apiKey=yLBCBklrMclT4A2VNuiWCPrHJmdQ3zjY",
+          data: JSON.stringify( datos ),
           type: "POST",
           contentType: "application/json" } ).done(function(data){
 		          	var fecha = new Date()

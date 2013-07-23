@@ -18,6 +18,7 @@
   <a href="/map/20">Ultimos 20 Min</a> | 
   <a href="/map/30">Ultimos 30 Min</a> | <a href="/map/60">Ultima hora</a>
       </p>
+      <p>Haga CLick en los puntos para ver el colectivo y su direccion.</p>
     </header>
 <meta name="viewport" content="width=620" />
 
@@ -49,20 +50,33 @@ function success(position) {
   
 
   var myOptions = {
-    zoom: 14,
+    zoom: 12,
     center: latlng,
     mapTypeControl: false,
     navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
-  <% points.forEach(function(element){%>
-  var marker = new google.maps.Marker({
+
+  <% points.forEach(function(element,e2){%>
+
+  var marker<%=e2%> = new google.maps.Marker({
       position: new google.maps.LatLng("<%=element.latitude%>","<%=element.longitude%>"),
       map: map, 
-      title:"<%=element.bus%>"
+      title:"<div style='width:200px;height:100px;font-size:11px'>Cole:<%=element.bus%> | Direccion: <%=element.direccion%></div>"
   });
+  var infowindow<%=e2%> = new google.maps.InfoWindow({
+    content: "<div style='width:200px;height:100px;font-size:11px'>Cole:<%=element.bus%> | Direccion: <%=element.direccion%></div>"
+});
+  
+
+google.maps.event.addListener(marker<%=e2%>, 'click', function() {
+    infowindow<%=e2%>.open(map, marker<%=e2%>);
+});
+
   <%});%>
+
+
 }
 
 function error(msg) {

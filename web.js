@@ -108,7 +108,9 @@ mongo.Db.connect(mongoUri,{safe:false}, function (err, db) {
     	//console.log(positions.length);
     	//if(positions){res.send("SI"+positions.length);}else{res.send("NO");}
     	
-	res.render('map',{points:positions,minutes:req.params.minutes,fecha_menor:new Date(fecha_menor).toJSON()});
+	res.render('map',{points:positions,
+		minutes:req.params.minutes,
+		fecha_menor:new Date(fecha_menor).toJSON()});
 });
   });
 });
