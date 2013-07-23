@@ -98,6 +98,7 @@ mongo.Db.connect(mongoUri,{safe:false}, function (err, db) {
   	var fecha_menor = new Date(today.getTime() - (1 * req.params.minutes * 60 * 1000)) - (1* today.getTimezoneOffset() * 60*1000);
   	console.log("today==>"+today+".... fecha menor==>"+fecha_menor);
   	var fecha = {
+  		"latitude": {"$ne":undefined},
     "time": {
         "$gt": new Date(fecha_menor).toJSON()
     }
