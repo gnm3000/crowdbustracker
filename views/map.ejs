@@ -87,22 +87,72 @@ function success(position) {
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
+  var directionsService = new google.maps.DirectionsService();
+google.maps.event.addListener(map, 'click', function(event) {
+  console.log(event.latLng);
+    var request = {
+        origin:event.latLng, 
+        destination:event.latLng,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
 
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+          var marker = new google.maps.Marker({
+             position: response.routes[0].legs[0].start_location, 
+             map: map,
+             title:"Hello World!"
+          });
+      }
+    });
+});
   <% points.forEach(function(element,e2){%>
+var latLng<%=e2%> = new google.maps.LatLng("<%=element.latitude%>","<%=element.longitude%>");
+console.log(latLng<%=e2%>);
+  var request<%=e2%> = {
+        origin:latLng<%=e2%>, 
+        destination:latLng<%=e2%>,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+     directionsService.route(request<%=e2%>, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+          var marker<%=e2%> = new google.maps.Marker({
+             position: response.routes[0].legs[0].start_location, 
+             map: map,
+             title:"Hello World!"
+          });
+      }
+    });
 
-  var marker<%=e2%> = new google.maps.Marker({
-      position: new google.maps.LatLng("<%=element.latitude%>","<%=element.longitude%>"),
+/*    var request<%=e2%> = {
+        origin:latLng, 
+        destination:latLng,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+    directionsService.route(request<%=e2%>, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+          var marker<%=e2%> = new google.maps.Marker({
+             position: response.routes[0].legs[0].start_location, 
+             map: map,
+             title:"<div style='width:200px;height:100px;font-size:11px'>Cole:<%=element.bus%> | Direccion: <%=element.direccion%></div>"
+          });
+
+      }
+    });*/
+
+  /*var marker<%=e2%> = new google.maps.Marker({
+      position: latLng,
       map: map, 
       title:"<div style='width:200px;height:100px;font-size:11px'>Cole:<%=element.bus%> | Direccion: <%=element.direccion%></div>"
   });
   var infowindow<%=e2%> = new google.maps.InfoWindow({
     content: "<div style='width:200px;height:100px;font-size:11px'>Cole:<%=element.bus%> | Direccion: <%=element.direccion%></div>"
-});
+});*/
   
 
-google.maps.event.addListener(marker<%=e2%>, 'click', function() {
+/*google.maps.event.addListener(marker<%=e2%>, 'click', function() {
     infowindow<%=e2%>.open(map, marker<%=e2%>);
-});
+});*/
 
   <%});%>
 

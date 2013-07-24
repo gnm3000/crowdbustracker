@@ -21,7 +21,8 @@ function startLocationTracking(){
 }
 
 function showCurrentLocation(position){
-	document.getElementById("mylocation").innerHTML = "Tracking your position --> Current Latitude : <span id='latitude'>" + position.coords.latitude + "</span> , Longitude : <span id='longitude'>" + position.coords.longitude+"</span>";
+	document.getElementById("mylocation").innerHTML = "Tracking your position --> Current Latitude : <span id='latitude'>" + position.coords.latitude + "</span> , Longitude : <span id='longitude'>" + 
+	position.coords.longitude+"</span>";
 }
 
 function errorHandler(error){
@@ -77,7 +78,7 @@ if($("#mylocation").data("status")=="activo"){
 	var latitude = $("#latitude").html();
 	var longitude = $("#longitude").html();
 	if(latitude!='' && longitude!=''){
-		
+
 console.log("la fecha real que se guarda ahora=>"+new Date().toISOString());
 	//aca va el jquery a mongodb
 	console.log("la modificada que se guardaba=>"+addTimeToDate(-3, 'h', new Date()).toISOString());
