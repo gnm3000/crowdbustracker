@@ -28,9 +28,9 @@ map.addMarker({
         lng: <%=element.longitude%>,
         title: '<%=element.bus%>',
         icon: "/images/pin1.png",
-        
+       
         infoWindow: {
-          content: '<p><%=element.bus%> - <%=element.direccion%></p>'
+          content: '<p><%=element.bus%> - <%=element.direccion%> <%if(element.hora){%> - <%=element.hora%><%}%></p> '
         }
       });
   <%}else{%>
@@ -41,7 +41,7 @@ map.addMarker({
         icon: "/images/pin2.png",
         
         infoWindow: {
-          content: '<p><%=element.bus%> - <%=element.direccion%></p>'
+          content: '<p><%=element.bus%> - <%=element.direccion%> <%if(element.hora){%> - <%=element.hora%><%}%></p>'
         }
       });
     <%}%>

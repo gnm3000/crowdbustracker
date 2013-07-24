@@ -83,9 +83,16 @@ console.log("la fecha real que se guarda ahora=>"+new Date().toISOString());
 	//aca va el jquery a mongodb
 	console.log("la modificada que se guardaba=>"+addTimeToDate(-3, 'h', new Date()).toISOString());
 	var time_gmt = addTimeToDate(-3, 'h', new Date());
-
+var fecha = new Date()
+          var hora = fecha.getHours()
+          var minuto = fecha.getMinutes()
+          var segundo = fecha.getSeconds()
+          if (hora < 10) {hora = "0" + hora}
+          if (minuto < 10) {minuto = "0" + minuto}
+          if (segundo < 10) {segundo = "0" + segundo}
+          var horita = hora + ":" + minuto + ":" + segundo;
 	var datos = { "latitude" : latitude, "longitude":longitude,
-          	"time":new Date().toISOString(),
+          	"time":new Date().toISOString(),hora: horita,
           	bus:$("#colectivo option:selected").val(),
           	direccion:$("#direccion option:selected").val() }
 
