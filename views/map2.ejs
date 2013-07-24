@@ -22,7 +22,7 @@
         zoom: 12
       });
        <% points.forEach(function(element){%>
-<% if (element.direccion='De chaco a Corrientes'){%>
+<% if (element.direccion=='De chaco a Corrientes'){%>
 map.addMarker({
         lat: <%=element.latitude%>,
         lng: <%=element.longitude%>,
