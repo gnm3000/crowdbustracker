@@ -1,11 +1,13 @@
-var express = require("express") , passport = require('passport'), util = require('util')
+var express = require("express") ,
+ passport = require('passport'),
+ util = require('util')
  , FacebookStrategy = require('passport-facebook').Strategy;
- var FACEBOOK_APP_ID = "150506191810997"
-var FACEBOOK_APP_SECRET = "c0510117225af25b201e4d9be86960ef";
+ var FACEBOOK_APP_ID = "150506191810__7"
+var FACEBOOK_APP_SECRET = "c05101172__af25b201e4d9be86960ef";
 var fs = require('fs');
 var mongo = require('mongodb');
 var isodate = require("isodate");
-var mongoUri = "mongodb://heroku_app17058222:9ocu5dnk769vj6rav0so4nqpb9@ds037478.mongolab.com:37478/heroku_app17058222"; 
+var mongoUri = "mongodb://heroku_app17058__2:9ocu5dnk__9vj6rav0so4nqpb9@ds037478.mongolab.com:37478/heroku_app17058222"; 
 
 
 
